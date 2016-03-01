@@ -27,7 +27,7 @@ public class Water : MonoBehaviour {
     public GameObject watermesh;
 
     //All our constants
-    const float springconstant = 0.02f;
+    const float springconstant = 0.01f;
     const float damping = 0.04f;
     const float spread = 0.05f;
     const float z = -1f;
@@ -36,14 +36,16 @@ public class Water : MonoBehaviour {
     float baseheight;
     float left;
     float bottom;
-    
+
+    public GameObject world;
 
     void Start()
     {
         //Spawning our water
-        SpawnWater(-10,20,0,-3);
+        float width = (20) * transform.localScale.x;
+        float left = (transform.position.x - (width/2));
+        SpawnWater(left, width, transform.position.y, (transform.position.y - 3) * transform.localScale.y);
     }
-
     
     public void Splash(float xpos, float velocity)
     {
@@ -238,16 +240,15 @@ public class Water : MonoBehaviour {
         //Finally we update the meshes to reflect this
         UpdateMeshes();
 	}
-    public float desiredHeight = -1.5f, dampeningFactor = 250f, force, maxForce = 100, minForce = -100;
+    public float maxForce = 15f, minForce = -15f;
+    public float dampeningFactor = .4f, force, springC = 6f;
     void OnTriggerStay2D(Collider2D Hit)
     {
         Rigidbody2D hitThing = Hit.GetComponent<Rigidbody2D>();
-        force = (dampeningFactor * Mathf.Sqrt((springconstant) * Mathf.Abs(Mathf.Abs(hitThing.position.y) - Mathf.Abs(desiredHeight))));
-            //(springconstant * hitThing.velocity.y * dampeningFactor)/(hitThing.position.y - desiredHeight);
         if (hitThing != null)
         {
-            //hitThing.AddForce(new Vector2(0,  Mathf.Clamp(hitThing.velocity.y, minForce, maxForce)));
-            hitThing.velocity = new Vector2(0, Mathf.Clamp(hitThing.velocity.y + force, minForce, maxForce));
+            force = ( (-1 * (springC * (hitThing.position.y - baseheight-1.2f))) - (dampeningFactor * hitThing.velocity.y));
+            hitThing.AddForce(transform.up * force);
         }
     }
 }

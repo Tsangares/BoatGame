@@ -2,27 +2,27 @@
 using System.Collections;
 
 public class Goal : MonoBehaviour {
-    private GameController gameController;
+    private ScoreController scoreController;
     // Use this for initialization
     void Start () {
-        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
-        if (gameControllerObject != null)
+        GameObject scoreControllerObject = GameObject.FindWithTag("ScoreManager");
+        if (scoreControllerObject != null)
         {
-            gameController = gameControllerObject.GetComponent<GameController>();
+            scoreController = scoreControllerObject.GetComponent<ScoreController>();
         }
-        if (gameController == null)
+        if (scoreController == null)
         {
-            Debug.Log("Cannot find 'GameController' script");
+            Debug.Log("Cannot find 'ScoreController' script");
         }
     }
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "GoalL")
         {
-            gameController.AddScoreL();
+            scoreController.AddScoreL();
         } if(other.gameObject.tag == "GoalR")
         {
-            gameController.AddScoreR();
+            scoreController.AddScoreR();
         }
     }
 }
