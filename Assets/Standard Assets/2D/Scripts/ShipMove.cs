@@ -15,18 +15,19 @@ public class ShipMove : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
+       
         if (Input.GetAxis(pR) != 0)
             eR.AddRelativeForce(new Vector2(0, engineForce * Input.GetAxis(pR)));
-        if (Input.GetButton(pR))
+        if (Input.GetButton(pR) || Input.GetKey("right"))
         {//add force to right engine
             eR.AddRelativeForce(new Vector2(0, engineForce));
         }
         if (Input.GetAxis(pL) != 0)
             eL.AddRelativeForce(new Vector2(0, engineForce * Input.GetAxis(pL)));
-        if (Input.GetButton(pL))
+        if (Input.GetButton(pL) || Input.GetKey("left"))
         {//add force to left engine
             eL.AddRelativeForce(new Vector2(0, engineForce));
-        } if (Input.GetButton(hop) && (hopTime < Time.time - timeBetweenHop))
+        } if ((Input.GetButton(hop) || Input.GetKey("up")) && (hopTime < Time.time - timeBetweenHop))
         {//hop!
             hull.AddRelativeForce(new Vector2(0, hopForce));
             hopTime = Time.time;
